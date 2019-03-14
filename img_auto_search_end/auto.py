@@ -57,7 +57,7 @@ class storageandfication:
         fasttweetflag=False
         timeflag=False 
 
-        api=login.login("")#ログイン
+        api=login.login("自分のユーザーID")#ログイン
         
         #画像を含むツイート取得するループ
         for page in pages:
@@ -65,23 +65,23 @@ class storageandfication:
             tweets=api.user_timeline(Account, count=200, page=page)
             for tweet in tweets:
                 try:
-                    print("try")
+
                     tweet.created_at+=timedelta(hours=9)#ツイート時間取得
                     print(tweet.created_at)
                     
-                    print("時間比較")
+                    
                     if tweet.created_at <= oldtime: #DB内に記録されている時間を下回ったらループ終了
                         print("roop_end")
                         timeflag=True
                         break
 
-                    print("db挿入")
+                    
                     if fasttweetflag==False: #一番最新のツイート時間をDBに記録しておくことで次のアクセスでの画像多重保存を防ぐ
                         print("dblogwrit")
                         self.dblord.dbmemo(Account,tweet.created_at)#ユーザー名と最新ツイート時間を渡す
                         fasttweetflag=True
 
-                    print("dbend")
+                    
                     url=tweet.extended_entities['media'][0]['media_url']
                     tdatetime = dt.now()
                     filename=path+tdatetime.strftime('%Y%m%d%H%M%S')+'.jpg'  #"img"というサブフォルダに保存
